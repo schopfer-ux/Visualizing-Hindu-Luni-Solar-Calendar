@@ -63,36 +63,36 @@ function DispCard({title, start, end, itemName, itemData, nextItem, tagLine}) {
 
 
   return (
-    <div className="card bg-neutral shadow-xl p-6 w-full min-w-[900px]">
-    <div className="flex flex-col">
-    <div className="text-xl font-bold mb-4 text-left">{title}</div>
-      
-      <div className="text-md font-medium text-slate-400 mb-4 text-left">{tagLine}</div>
-    </div>
-    <div className="flex flex-col md:flex-row gap-4">
-      <div className="w-full md:w-1/2 min-w-[400px]">
+    <div className="card bg-neutral shadow-xl p-6 w-full max-w-full sm:max-w-md mx-auto">
+  <div className="flex flex-col mb-4">
+    <div className="text-xl font-bold mb-2 text-left">{title}</div>
+    <div className="text-md font-medium text-slate-400 mb-4 text-left">{tagLine}</div>
+  </div>
+  <div className="flex flex-col md:flex-row gap-4">
+    <div className="w-full md:w-1/2">
       <TimeProgressBar
         startTime={start}
         endTime={end}
-        />
-      </div>
-      <div className="flex flex-col gap-4 text-left justify-center">
-        <p className="text-2xl md:text-4xl" style={{color: '#e0c304'}}>{itemName || "Not available"}</p>
-        <p className="text-sm md:text-base text-neutral-content">
-          {itemData ? itemData[itemName].highlight : '...'}
-        </p>
-        <p className="text-sm md:text-base font-medium text-slate-400">
-          {itemData ? itemData[itemName].description : '...'}
-        </p>
-        <p className="text-sm md:text-md font-bold text-neutral-content">
-          {"Next: " + (nextItem || "...") + '  '}
-          <span className=" badge badge-secondary text-xs md:text-md font-bold text-secondary-content">
-            {(" from " + formatDate2(end)) || "..."}
-          </span>
-        </p>
-      </div>
+      />
+    </div>
+    <div className="flex flex-col gap-4 text-left justify-center w-full md:w-1/2">
+      <p className="text-2xl md:text-4xl" style={{ color: '#e0c304' }}>{itemName || "Not available"}</p>
+      <p className="text-sm md:text-base text-neutral-content">
+        {itemData ? itemData[itemName].highlight : '...'}
+      </p>
+      <p className="text-sm md:text-base font-medium text-slate-400">
+        {itemData ? itemData[itemName].description : '...'}
+      </p>
+      <p className="text-sm md:text-md font-bold text-neutral-content">
+        {"Next: " + (nextItem || "...") + '  '}
+        <span className="badge badge-secondary text-xs md:text-md font-bold text-secondary-content">
+          {(" from " + formatDate2(end)) || "..."}
+        </span>
+      </p>
     </div>
   </div>
+</div>
+
   
   );
 }
