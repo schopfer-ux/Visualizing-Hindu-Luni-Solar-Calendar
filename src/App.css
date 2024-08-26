@@ -1,13 +1,10 @@
 #root {
   width: 100vw;
   margin: 0;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
-.checkme {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.card {
+  height: fit-content;
 }

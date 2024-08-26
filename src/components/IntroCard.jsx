@@ -9,10 +9,6 @@ const IntroCard = () => {
   return (
     <div className="card bg-slate-800 shadow-xl p-6 w-full max-w-full sm:max-w-md mx-auto">
     <div className="flex flex-col mb-4">
-      <div className="text-xl font-bold mb-2 text-left">Panchang</div>
-      <div className="text-md font-normal text-slate-400 mb-4 text-left">
-        for Now (Tithi, Nakshatra)
-      </div>
       <div className="text-md font-medium text-slate-400 mb-4 text-left">
         {new Date().toLocaleDateString()} - <span className="text-neutral-content">{lastUpdated}</span>
       </div>

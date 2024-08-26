@@ -1,5 +1,7 @@
 # Visualizing Hindu Luni-Solar Calendar
 
+Check out the live demo here: [Demo Link](https://main.ddlrz5voxqeen.amplifyapp.com/)
+
 This project provides an interactive and comprehensive visualization of the Hindu luni-solar calendar. It aims to present detailed insights into various aspects of the calendar, including Tithis, Nakshatras, and their corresponding timings. Utilizing modern web technologies, the application offers an intuitive interface for users to explore and understand the intricacies of the Hindu calendar system.
 
 ## Key Features

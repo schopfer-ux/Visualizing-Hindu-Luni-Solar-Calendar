@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import 'tailwindcss/tailwind.css';
 
-const TimeProgressBar = ({ startTime, endTime }) => {
+const TimeProgressBar = ({ startTime, endTime, title }) => {
   const [percentage, setPercentage] = useState(0);
   const [hrs, setHrs] = useState(0);
   const [mins, setMins] = useState(0);
@@ -53,7 +53,11 @@ const TimeProgressBar = ({ startTime, endTime }) => {
       })}
     />
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-      <div className="text-lg sm:text-xl text-gray-500 font-bold">ends in</div>
+    <p className="text-2xl md:text-3xl lg:text-4xl" style={{ color: "#e0c304" }}>
+        {title}
+        
+      </p>
+      <div className="text-md sm:text-md text-gray-500 font-bold">ends in</div>
       <div className="text-2xl sm:text-4xl">{hrs}h : {mins}m</div>
     </div>
   </div>
