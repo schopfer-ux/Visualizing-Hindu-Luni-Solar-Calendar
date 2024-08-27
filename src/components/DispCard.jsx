@@ -16,7 +16,7 @@ const formatDate = (date) => {
   return `${month} ${day} (${dayOfWeek}), ${hours}:${minutes} ${ampm}`;
 };
 
-const formatDate2 = (inputDate) => {
+export const formatDate2 = (inputDate) => {
   const today = new Date();
   const isToday =
     inputDate.getDate() === today.getDate() &&
