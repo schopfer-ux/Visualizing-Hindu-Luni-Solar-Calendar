@@ -67,3 +67,31 @@ const TimeProgressBar = ({ startTime, endTime, title }) => {
 };
 
 export default TimeProgressBar;
+
+
+export const calculateProgress = (startTimer, endTimer) => {
+  const now = new Date();
+  const start = new Date(startTimer);
+  const end = new Date(endTimer);
+  let progress = 0;
+
+  if (now < start) {
+    progress = 0;
+  } else if (now > end) {
+    progress = 100;
+  } else {
+    const totalDuration = end - start;
+    const elapsedTime = now - start;
+    progress = (elapsedTime / totalDuration) * 100;
+  }
+  
+  const remainingTime = end - now;
+
+  const remainingHours = Math.floor(remainingTime / (1000 * 60 * 60)); // Convert ms to hours
+  const remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60)); // Convert remainder to minutes
+  
+  progress = progress.toFixed(2);
+
+  return {progress, remainingHours, remainingMinutes}
+
+};

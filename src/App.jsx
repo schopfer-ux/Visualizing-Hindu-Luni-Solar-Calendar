@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import { CalculatorService } from './config/calculator.service';
-import { SunIcon, StarIcon } from './components/contstants/svgIcons'; // Keeping typos as is
-import { masamDescriptions } from './components/contstants/masamDescriptions'; // Keeping typos as is
-import { nakshatraDescriptions } from './components/contstants/nakshDescriptions'; // Keeping typos as is
+import { SunIcon, StarIcon } from './components/contstants/svgIcons';
+import { masamDescriptions } from './components/contstants/masamDescriptions';
+import { nakshatraDescriptions } from './components/contstants/nakshDescriptions';
 import DispCard from './components/DispCard';
 import IntroCard from './components/IntroCard';
-import DesCard from './components/DesCrad'; // Keeping typos as is
+import DesCard from './components/DesCrad';
 import { formatDate2 } from './components/DispCard';
-// import Notification from './notifications/Notification'; // Uncomment if needed
+import {calculateProgress} from './components/Countdown'
 
 function App() {
   const [tithiNotif, setTithiNotif] = useState("");
@@ -24,10 +24,10 @@ function App() {
     setTithiNotif(panchangData.Tithi);
   }, []);
 
-  const sendNotification = useCallback((item) => {
+  const sendNotification = useCallback((item, percentage) => {
     if ("Notification" in window && Notification.permission === "granted" && panchang) {
-      new Notification(`${item} Tithi in Effect`, {
-        body: `Ends ${formatDate2(panchang.Tithi_End)}`,
+      new Notification(`${item} in effect (${percentage.progress}%)`, {
+        body: `Ends ${formatDate2(panchang.Tithi_End)} | ${percentage.remainingHours} hrs ${percentage.remainingMinutes} mins remaining`,
         icon: '/logo.svg',
       });
     }
@@ -37,11 +37,29 @@ function App() {
     if ("Notification" in window) {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          sendNotification(tithiNotif);
+          sendNotification(tithiNotif, calculateProgress(panchang.Tithi_Start, panchang.Tithi_End)); // Send an initial notification
         }
       });
     }
   }, [sendNotification, tithiNotif]);
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+      console.log('Service Worker registered with scope:', registration.scope);
+    }).catch(function(error) {
+      console.log('Service Worker registration failed:', error);
+    });
+  }
+  
+
+  useEffect(() => {
+    
+    const intervalId = setInterval(() => {
+      sendNotification(tithiNotif, calculateProgress(panchang.Tithi_Start, panchang.Tithi_End)); 
+    }, 20000);
+
+    return () => clearInterval(intervalId);
+  }, [tithiNotif, sendNotification]);
 
   useEffect(() => {
     if (panchang) {
