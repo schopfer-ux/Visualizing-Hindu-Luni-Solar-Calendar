@@ -21,10 +21,10 @@ function App() {
     const date = new Date();
     const panchangData = calculatorService.calculate(date);
     setPanchang(panchangData);
-    setTithiNotif(panchangData.Tithi);
   }, []);
 
   const sendNotification = useCallback((item, percentage) => {
+    const percentageMet = [0,25,50,75,100];
     if ("Notification" in window && Notification.permission === "granted" && panchang) {
       new Notification(`${item} in effect (${percentage.progress}%)`, {
         body: `Ends ${formatDate2(panchang.Tithi_End)} | ${percentage.remainingHours} hrs ${percentage.remainingMinutes} mins remaining`,
@@ -51,16 +51,6 @@ function App() {
     });
   }
   
-
-  useEffect(() => {
-    
-    const intervalId = setInterval(() => {
-      sendNotification(tithiNotif, calculateProgress(panchang.Tithi_Start, panchang.Tithi_End)); 
-    }, 20000);
-
-    return () => clearInterval(intervalId);
-  }, [tithiNotif, sendNotification]);
-
   useEffect(() => {
     if (panchang) {
       requestNotificationPermission();
