@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { CalculatorService } from './config/calculator.service';
 import { SunIcon, StarIcon } from './components/contstants/svgIcons';
@@ -8,10 +8,8 @@ import DispCard from './components/DispCard';
 import IntroCard from './components/IntroCard';
 import DesCard from './components/DesCrad';
 import { formatDate2 } from './components/DispCard';
-import {calculateProgress} from './components/Countdown'
 
 function App() {
-  const [tithiNotif, setTithiNotif] = useState("");
   const [panchang, setPanchang] = useState(null);
   const [tithiData, setTithiData] = useState(null);
   const [nakshData, setNakshData] = useState(null);
@@ -20,42 +18,8 @@ function App() {
     const calculatorService = new CalculatorService();
     const date = new Date();
     const panchangData = calculatorService.calculate(date);
-    setPanchang(panchangData);
+    setPanchang(panchangData); // Runs only once when the component mounts
   }, []);
-
-  const sendNotification = useCallback((item, percentage) => {
-    const percentageMet = [0,25,50,75,100];
-    if ("Notification" in window && Notification.permission === "granted" && panchang) {
-      new Notification(`${item} in effect (${percentage.progress}%)`, {
-        body: `Ends ${formatDate2(panchang.Tithi_End)} | ${percentage.remainingHours} hrs ${percentage.remainingMinutes} mins remaining`,
-        icon: '/logo.svg',
-      });
-    }
-  }, [panchang]);
-
-  const requestNotificationPermission = useCallback(() => {
-    if ("Notification" in window) {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          sendNotification(tithiNotif, calculateProgress(panchang.Tithi_Start, panchang.Tithi_End)); // Send an initial notification
-        }
-      });
-    }
-  }, [sendNotification, tithiNotif]);
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-      console.log('Service Worker registered with scope:', registration.scope);
-    }).catch(function(error) {
-      console.log('Service Worker registration failed:', error);
-    });
-  }
-  
-  useEffect(() => {
-    if (panchang) {
-      requestNotificationPermission();
-    }
-  }, [panchang, requestNotificationPermission]);
 
   useEffect(() => {
     if (panchang) {
