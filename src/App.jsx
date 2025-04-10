@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import { CalculatorService } from './config/calculator.service';
 import { SunIcon, StarIcon } from './components/contstants/svgIcons';
@@ -14,12 +14,18 @@ function App() {
   const [tithiData, setTithiData] = useState(null);
   const [nakshData, setNakshData] = useState(null);
 
-  useEffect(() => {
+  // Memoizing the calculator logic to ensure it doesn't run unnecessarily
+  const calculatePanchang = useCallback(() => {
     const calculatorService = new CalculatorService();
-    const date = new Date();
-    const panchangData = calculatorService.calculate(date);
-    setPanchang(panchangData); // Runs only once when the component mounts
+    const date = new Date();  // Keeping the date inside the function
+    return calculatorService.calculate(date);
   }, []);
+
+  // This useEffect will only run once when the component mounts
+  useEffect(() => {
+    const panchangData = calculatePanchang();
+    setPanchang(panchangData);
+  }, [calculatePanchang]); // Dependencies array ensures this runs only once
 
   useEffect(() => {
     if (panchang) {
@@ -32,7 +38,7 @@ function App() {
       setTithiData(foundTithiData);
       setNakshData(foundNakshData);
     }
-  }, [panchang]);
+  }, [panchang]); // Runs only when panchang is updated
 
   if (!panchang) {
     return <div>Loading...</div>;
